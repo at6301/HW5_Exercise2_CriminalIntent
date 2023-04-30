@@ -10,6 +10,10 @@ import com.thies.hw5_exercise2_criminalintent.Const.REQUIRES_POLICE
 import com.thies.hw5_exercise2_criminalintent.databinding.ListItemCrimeBinding
 import com.thies.hw5_exercise2_criminalintent.databinding.ListItemCrimeSeriousBinding
 
+
+// Used this link to help me work through part B of exercise 2:
+// https://www.section.io/engineering-education/implementing-multiple-viewholders-in-android-using-kotlin/
+
 class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
@@ -59,21 +63,26 @@ class CrimeListAdapter(private val crimes: List<Crime>) : RecyclerView.Adapter<V
             return CrimeHolder(binding)
         } else {
             val inflater = LayoutInflater.from(parent.context)
-            val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
-            return SeriousCrimeHolder(ListItemCrimeSeriousBinding.bind())
+            val binding = ListItemCrimeSeriousBinding.inflate(inflater, parent, false)
+            return SeriousCrimeHolder(binding)
         }
 
 
     }
     // populates holder with crime from given position
-    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val crime = crimes[position]
+        if (getItemViewType(position) == NO_POLICE) {
+            (holder as CrimeHolder).bind(crimes[position])
+        } else {
+            (holder as SeriousCrimeHolder).bind(crimes[position])
+        }
         /*holder.apply {
             // set text from given crime in corresponding text views
             binding.crimeTitle.text = crime.title
             binding.crimeDate.text = crime.date.toString()
         }*/
-        holder.bind(crime)
+        //holder.bind(crime)
     }
 
     override fun getItemCount() = crimes.size
