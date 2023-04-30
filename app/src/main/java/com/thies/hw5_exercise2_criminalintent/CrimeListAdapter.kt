@@ -2,6 +2,7 @@ package com.thies.hw5_exercise2_criminalintent
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.thies.hw5_exercise2_criminalintent.databinding.ListItemCrimeBinding
 
@@ -10,6 +11,15 @@ class CrimeHolder(private val binding: ListItemCrimeBinding) : RecyclerView.View
     fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
         binding.crimeDate.text = crime.date.toString()
+
+        // detecting clicks in CrimeHolder
+        binding.root.setOnClickListener {
+            Toast.makeText(
+                binding.root.context,
+                "${crime.title} clicked!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }
 
